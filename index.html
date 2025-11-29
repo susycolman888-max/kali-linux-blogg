@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kali Linux Blog - Seguridad Informática</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #e0e0e0;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1a2e 100%);
+            min-height: 100vh;
+        }
+
+        header {
+            background: linear-gradient(135deg, #0f3460 0%, #16213e 100%);
+            color: white;
+            padding: 2rem 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        header p {
+            font-size: 1.1rem;
+            color: #00d4ff;
+        }
+
+        nav {
+            background: #16213e;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: #00d4ff;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+        }
+
+        nav a:hover {
+            background: #00d4ff;
+            color: #16213e;
+            transform: translateY(-2px);
+        }
+
+        main {
+            padding: 3rem 0;
+        }
+
+        .info-box {
+            background: rgba(0, 212, 255, 0.1);
+            border: 2px solid #00d4ff;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .info-box h3 {
+            color: #00d4ff;
+            margin-bottom: 0.5rem;
+            font-size: 1.3rem;
+        }
+
+        .info-box p {
+            margin: 0.3rem 0;
+            font-size: 1.1rem;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #1e3a5f 0%, #2c5f7f 100%);
+            padding: 3rem;
+            border-radius: 15px;
+            margin-bottom: 3rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+
+        .hero h2 {
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+            color: #00d4ff;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #00d4ff, #0099cc);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+            margin-top: 1rem;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 212, 255, 0.5);
+        }
+
+        .form-container {
+            background: rgba(30, 95, 79, 0.3);
+            border: 2px solid #00ff88;
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+            display: none;
+        }
+
+        .form-container.active {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            color: #00ff88;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #00d4ff;
+            border-radius: 8px;
+            background: rgba(30, 58, 95, 0.5);
+            color: white;
+            font-size: 1rem;
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .posts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .post-card {
+            background: rgba(30, 58, 95, 0.5);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 0;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 212, 255, 0.1);
+            overflow: hidden;
+        }
+
+        .post-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 48px rgba(0, 212, 255, 0.2);
+            border-color: rgba(0, 212, 255, 0.3);
+        }
+
+        .post-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .post-content {
+            padding: 2rem;
+        }
+
+        .post-card h3 {
+            color: #00d4ff;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .post-card p {
+            color: #b0b0b0;
+            margin-bottom: 1.5rem;
+        }
+
+        .post-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(0, 212, 255, 0.2);
+            font-size: 0.9rem;
+            color: #00d4ff;
+            margin-bottom: 1rem;
+        }
+
+        .post-actions {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .btn-like, .btn-comment {
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .btn-like {
+            background: linear-gradient(135deg, #ff0080, #ff8c00);
+            color: white;
+        }
+
+        .btn-like:hover {
+            transform: scale(1.05);
+        }
+
+        .btn-comment {
+            background: linear-gradient(135deg, #0080ff, #00d4ff);
+            color: white;
+        }
+
+        .btn-comment:hover {
+            transform: scale(1.05);
+        }
+
+        .comments-section {
+            display: none;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 2px solid rgba(0, 212, 255, 0.3);
+        }
+
+        .comments-section.active {
+            display: block;
+        }
+
+        .comment {
+            background: rgba(0, 100, 150, 0.2);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            border-left: 3px solid #00d4ff;
+        }
+
+        .comment-author {
+            color: #00ff88;
+            font-weight: bold;
+            margin-bottom: 0.3rem;
+        }
+
+        .comment-text {
+            color: #e0e0e0;
+        }
+
+        .comment-form {
+            margin-top: 1rem;
+        }
+
+        .comment-form input,
+        .comment-form textarea {
+            width: 100%;
+            padding: 0.6rem;
+            margin-bottom: 0.8rem;
+            border: 2px solid #00d4ff;
+            border-radius: 8px;
+            background: rgba(30, 58, 95, 0.5);
+            color: white;
+        }
+
+        .tool-badge {
+            display: inline-block;
+            background: rgba(0, 212, 255, 0.2);
+            color: #00d4ff;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            margin: 0.2rem;
+            border: 1px solid rgba(0, 212, 255, 0.3);
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: #00d4ff;
+            margin: 3rem 0 2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 3px;
+            background: #00d4ff;
+            margin: 1rem auto;
+        }
+
+        footer {
+            background: #0f1419;
+            color: #b0b0b0;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 4rem;
+        }
+
+        footer a {
+            color: #00d4ff;
+            text-decoration: none;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8rem;
+            }
+
+            .hero h2 {
+                font-size: 1.6rem;
+            }
+
+            .posts-grid {
+                grid-template-columns: 1fr;
+            }
+
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>🛡️ Kali Linux Security Blog</h1>
+            <p>Explorando el mundo de la seguridad informática ética</p>
+        </div>
+    </header>
+
+    <nav>
+        <div class="container">
+            <ul>
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#herramientas">Herramientas</a></li>
+                <li><a href="#comunidad">Comunidad</a></li>
+                <li><a href="#recursos">Recursos</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container">
+        <div class="info-box">
+            <h3>📝 Información del Trabajo</h3>
+            <p><strong>Alumno:</strong> Ivan Ezequiel Colman</p>
+            <p><strong>Curso:</strong> 6º II</p>
+            <p><strong>Profesora:</strong> Diana Sabrina Figueroa Olmedo</p>
+        </div>
+
+        <section id="inicio" class="hero">
+            <h2>Bienvenido al Blog Interactivo de Kali Linux</h2>
+            <p>
+                Kali Linux es una distribución de Linux especializada en seguridad informática, 
+                auditorías de penetración y análisis forense digital. En este blog, exploramos 
+                sus herramientas más poderosas y compartimos conocimientos con la comunidad.
+            </p>
+            <button class="btn-primary" onclick="toggleNewPostForm()">➕ Agregar Tu Publicación</button>
+        </section>
+
+        <div id="newPostForm" class="form-container">
+            <h3 style="color: #00ff88; margin-bottom: 1.5rem;">✍️ Crear Nueva Publicación</h3>
+            <div class="form-group">
+                <label>Tu Nombre:</label>
+                <input type="text" id="authorName" placeholder="Ej: María García">
+            </div>
+            <div class="form-group">
+                <label>Título de la Publicación:</label>
+                <input type="text" id="postTitle" placeholder="Ej: Guía de John the Ripper">
+            </div>
+            <div class="form-group">
+                <label>Contenido:</label>
+                <textarea id="postContent" placeholder="Escribe aquí tu artículo, tutorial o experiencia..."></textarea>
+            </div>
+            <div class="form-group">
+                <label>Etiquetas (separadas por comas):</label>
+                <input type="text" id="postTags" placeholder="Ej: Password Cracking, Tools, Tutorial">
+            </div>
+            <button class="btn-primary" onclick="addNewPost()">🚀 Publicar</button>
+        </div>
+
+        <h2 class="section-title" id="herramientas">🔧 Herramientas y Publicaciones</h2>
+        <div id="postsContainer" class="posts-grid">
+            <!-- Los posts se cargarán aquí dinámicamente -->
+        </div>
+
+        <section id="recursos" style="margin-top: 4rem;">
+            <h2 class="section-title">📖 Recursos de Aprendizaje</h2>
+            <div class="hero">
+                <h3 style="margin-bottom: 1.5rem;">Expande tus Conocimientos</h3>
+                <div style="text-align: left; max-width: 800px; margin: 0 auto;">
+                    <h4 style="color: #00d4ff; margin-top: 1.5rem;">🎓 Plataformas de Práctica:</h4>
+                    <ul style="list-style: none; padding-left: 0;">
+                        <li style="padding: 0.5rem 0;">• <strong>HackTheBox</strong> - Laboratorios de pentesting en línea</li>
+                        <li style="padding: 0.5rem 0;">• <strong>TryHackMe</strong> - Rutas de aprendizaje guiadas</li>
+                        <li style="padding: 0.5rem 0;">• <strong>VulnHub</strong> - Máquinas virtuales vulnerables</li>
+                    </ul>
+
+                    <h4 style="color: #00d4ff; margin-top: 1.5rem;">⚖️ Consideraciones Éticas:</h4>
+                    <p style="padding: 0.5rem 0; color: #ffaa00; font-weight: 600;">
+                        ⚠️ Importante: Todas las técnicas mostradas en este blog deben utilizarse 
+                        únicamente en entornos autorizados y con fines educativos. El hacking 
+                        no autorizado es ilegal y puede tener graves consecuencias legales.
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Kali Linux Security Blog. Creado con fines educativos.</p>
+            <p>Recuerda: <strong>Practica el hacking ético y responsable</strong></p>
+            <p style="margin-top: 1rem; font-size: 0.9rem;">
+                Recursos adicionales: 
+                <a href="https://www.kali.org/" target="_blank">Kali.org</a> | 
+                <a href="https://www.offensive-security.com/" target="_blank">Offensive Security</a>
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Posts iniciales
+        let posts = [
+            {
+                id: 1,
+                title: "Nmap - Network Mapper",
+                content: "Nmap es una de las herramientas más potentes para el escaneo de redes y descubrimiento de hosts. Permite identificar dispositivos en una red, puertos abiertos, servicios en ejecución y vulnerabilidades potenciales.",
+                author: "Ivan Colman",
+                date: "28 Nov 2025",
+                likes: 15,
+                tags: ["Escaneo de Redes", "Descubrimiento"],
+                image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&q=80",
+                comments: []
+            },
+            {
+                id: 2,
+                title: "Metasploit Framework",
+                content: "El framework de penetración más utilizado en el mundo. Metasploit ofrece una plataforma completa para desarrollar, probar y ejecutar código de explotación contra objetivos remotos en entornos controlados.",
+                author: "Ivan Colman",
+                date: "28 Nov 2025",
+                likes: 23,
+                tags: ["Explotación", "Post-Explotación"],
+                image: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800&q=80",
+                comments: []
+            },
+            {
+                id: 3,
+                title: "Wireshark - Análisis de Tráfico",
+                content: "Analizador de protocolos de red líder en la industria. Wireshark permite capturar y analizar el tráfico de red en tiempo real, facilitando la detección de problemas de seguridad y comportamientos anómalos.",
+                author: "Ivan Colman",
+                date: "28 Nov 2025",
+                likes: 18,
+                tags: ["Análisis de Tráfico", "Forense"],
+                image: "https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=800&q=80",
+                comments: []
+            }
+        ];
+
+        function renderPosts() {
+            const container = document.getElementById('postsContainer');
+            container.innerHTML = posts.map(post => `
+                <article class="post-card">
+                    <img src="${post.image}" alt="${post.title}" class="post-image">
+                    <div class="post-content">
+                        <h3>${post.title}</h3>
+                        <p>${post.content}</p>
+                        <div>
+                            ${post.tags.map(tag => `<span class="tool-badge">${tag}</span>`).join('')}
+                        </div>
+                        <div class="post-meta">
+                            <span>👤 ${post.author}</span>
+                            <span>📅 ${post.date}</span>
+                        </div>
+                        <div class="post-actions">
+                            <button class="btn-like" onclick="likePost(${post.id})">
+                                👍 Me gusta (${post.likes})
+                            </button>
+                            <button class="btn-comment" onclick="toggleComments(${post.id})">
+                                💬 Comentarios (${post.comments.length})
+                            </button>
+                        </div>
+                        <div id="comments-${post.id}" class="comments-section">
+                            <h4 style="color: #00d4ff; margin-bottom: 1rem;">💬 Comentarios:</h4>
+                            <div id="comments-list-${post.id}">
+                                ${post.comments.map(c => `
+                                    <div class="comment">
+                                        <div class="comment-author">${c.author}</div>
+                                        <div class="comment-text">${c.text}</div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                            <div class="comment-form">
+                                <input type="text" id="comment-author-${post.id}" placeholder="Tu nombre">
+                                <textarea id="comment-text-${post.id}" placeholder="Escribe tu comentario..."></textarea>
+                                <button class="btn-primary" onclick="addComment(${post.id})">📝 Enviar Comentario</button>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            `).join('');
+        }
+
+        function toggleNewPostForm() {
+            const form = document.getElementById('newPostForm');
+            form.classList.toggle('active');
+        }
+
+        function addNewPost() {
+            const author = document.getElementById('authorName').value;
+            const title = document.getElementById('postTitle').value;
+            const content = document.getElementById('postContent').value;
+            const tags = document.getElementById('postTags').value;
+
+            if (!author || !title || !content) {
+                alert('Por favor completa todos los campos obligatorios');
+                return;
+            }
+
+            const newPost = {
+                id: posts.length + 1,
+                title: title,
+                content: content,
+                author: author,
+                date: new Date().toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric' }),
+                likes: 0,
+                tags: tags ? tags.split(',').map(t => t.trim()) : ['General'],
+                image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800&q=80",
+                comments: []
+            };
+
+            posts.unshift(newPost);
+            renderPosts();
+            
+            // Limpiar formulario
+            document.getElementById('authorName').value = '';
+            document.getElementById('postTitle').value = '';
+            document.getElementById('postContent').value = '';
+            document.getElementById('postTags').value = '';
+            toggleNewPostForm();
+
+            alert('¡Publicación agregada exitosamente! 🎉');
+        }
+
+        function likePost(postId) {
+            const post = posts.find(p => p.id === postId);
+            if (post) {
+                post.likes++;
+                renderPosts();
+            }
+        }
+
+        function toggleComments(postId) {
+            const commentsSection = document.getElementById(`comments-${postId}`);
+            commentsSection.classList.toggle('active');
+        }
+
+        function addComment(postId) {
+            const authorInput = document.getElementById(`comment-author-${postId}`);
+            const textInput = document.getElementById(`comment-text-${postId}`);
+            
+            const author = authorInput.value;
+            const text = textInput.value;
+
+            if (!author || !text) {
+                alert('Por favor completa tu nombre y comentario');
+                return;
+            }
+
+            const post = posts.find(p => p.id === postId);
+            if (post) {
+                post.comments.push({
+                    author: author,
+                    text: text,
+                    date: new Date().toLocaleDateString('es-ES')
+                });
+                renderPosts();
+                
+                // Mantener abierta la sección de comentarios
+                setTimeout(() => {
+                    document.getElementById(`comments-${postId}`).classList.add('active');
+                }, 100);
+            }
+        }
+
+        // Renderizar posts al cargar la página
+        renderPosts();
+    </script>
+</body>
+</html>
